@@ -1,0 +1,87 @@
+@page
+@model RegisterPageModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<header class="has-image" style="background-image:url(@Url.Content("~/assets/img/door-green-closed-lock-4291.jpg"))">
+    <div class="dimmer"></div>
+    <div class="container text-center">
+        <h1>Register</h1>
+        <div class="row justify-content-center">
+            <div class="col-lg-8 lead">
+                <p>Nullam quis risus eget urna mollis ornare vel eu leo. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main>
+    <div class="block">
+        <div class="container">
+            @if (Model.Result == null || !Model.Result.Succeeded || Model.PasswordError != RegisterPageModel.PasswordResult.None)
+            {
+                <p class="lead">Here you can register yourself to get access to all of the exlusive features of the site.</p>
+                @if (Model.Result != null)
+                {
+                    <div class="alert alert-danger">
+                        <p>The following errors were found when trying to create your user account:</p>
+                        <ul>
+                            @foreach (var error in Model.Result.Errors)
+                            {
+                                <li>@error.Description</li>
+                            }
+                        </ul>
+                    </div>
+                }
+                else if (Model.PasswordError != RegisterPageModel.PasswordResult.None)
+                {
+                    <div class="alert alert-danger">
+                        <p>The following errors were found when trying to create your user account:</p>
+                        <ul>
+                            @if (Model.PasswordError == RegisterPageModel.PasswordResult.PasswordEmpty)
+                            {
+                                <li>Password '' is invalid.</li>
+                            }
+                            else
+                            {
+                                <li>The passwords doesn't match, please try again!</li>
+                            }
+                        </ul>
+                    </div>
+
+                }
+                <div class="row">
+                    <div class="col-sm-4">
+                        <form method="post">
+                            <div class="form-group">
+                                <label>Username</label>
+                                <input type="text" name="Username" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" name="Email" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" name="Password" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm Password</label>
+                                <input type="password" name="PasswordConfirm" class="form-control">
+                            </div>
+                            <button class="btn btn-success">Register</button>
+                        </form>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <p class="lead">
+                    Yes! Your user account has been successfully created. Now just click on "Subscribers" in the menu
+                    to get access to all of the exlusive content on the site!
+                </p>
+            }
+        </div>
+    </div>
+</main>>
