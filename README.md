@@ -10,6 +10,8 @@ with `dotnet new piranha.razor`.
 3. Code added for authentication
 4. Added this README
 5. Changed extension to README :)
+6. Added simple user registration
+7. Updated this README :)
 
 ## Resources
 
