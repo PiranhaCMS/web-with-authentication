@@ -44,6 +44,16 @@ namespace RazorWeb
                 options.UseIdentityWithSeed<IdentitySQLiteDb>(db =>
                     db.UseSqlite(_config.GetConnectionString("piranha")));
             });
+
+            // Add custom policies
+            services.AddAuthorization(o =>
+            {
+                // Read secured posts
+                o.AddPolicy("Subscriber", policy =>
+                {
+                    policy.RequireClaim("Subscriber", "Subscriber");
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,11 +76,21 @@ namespace RazorWeb
             // Configure Tiny MCE
             EditorConfig.FromFile("editorconfig.json");
 
+            // Custom middleware that checks for status 401
+            app.UseMiddleware<LoginRedirectMiddleware>();
+
             // Middleware setup
             app.UsePiranha(options => {
                 options.UseManager();
                 options.UseTinyMCE();
                 options.UseIdentity();
+            });
+
+            // Custom permissions
+            App.Permissions["App"].Add(new Piranha.Security.PermissionItem
+            {
+                Title = "Subscriber",
+                Name = "Subscriber"
             });
         }
     }
